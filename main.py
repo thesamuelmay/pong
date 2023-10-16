@@ -12,7 +12,7 @@ window.tracer(0)
 #initilaise the Block class
 class Block:
     def __init__(self, x, y):
-        self.block_turtle = turtle.Turtle()  
+        self.block_turtle = t.Turtle()  
         self.block_turtle.shape("square")  
         self.block_turtle.color("green")  
         self.block_turtle.penup()  
@@ -133,6 +133,31 @@ gameover = False
 winner_count_left = 0 
 winner_count_right = 0
 
+block_list = []
+
+# Constants
+block_width = 10
+block_height = 10
+gap = 13
+number_of_rows = 10
+number_of_columns = 3
+
+# Calculate total dimensions
+total_width = (block_width * number_of_columns) + (gap * (number_of_columns - 1))
+total_height = (block_height * number_of_rows) + (gap * (number_of_rows - 1))
+
+# Calculate starting points
+starting_x = -total_width / 2
+starting_y = total_height / 2
+
+for row in range(number_of_rows):
+    for col in range(number_of_columns):
+        x = starting_x + (block_width + gap) * col
+        y = starting_y - (block_height + gap) * row
+        block = Block(x, y)  # Instantiate a Block object
+        block.set_position(x, y)
+        block_list.append(block)
+
 setup()
 def main():
  global winner_count_right
@@ -150,6 +175,10 @@ def main():
  count_display_right.setpos(450,300)
  count_display_left.write('0',font=('impact',30,'normal'))
  count_display_right.write('0',font=('impact',30,'normal'))
+
+
+
+
 
  gameover = False
  global current_time
