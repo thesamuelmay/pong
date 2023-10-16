@@ -25,6 +25,8 @@ class Block:
         self.block_turtle.hideturtle() 
 
 
+def is_collision(block, ball):
+    return abs(block.block_turtle.xcor() - ball.xcor()) < 10 and abs(block.block_turtle.ycor() - ball.ycor()) < 10
 
 
 def setup():
@@ -223,6 +225,22 @@ def main():
     
     ball.setx(ball.xcor() + ball.dx)
     ball.sety(ball.ycor() + ball.dy)
+    for block in block_list:
+     if is_collision(block, ball):  # Assuming you have a function to check collision
+        block.hide()
+        block_list.remove(block)
+
+    # Determine the side where the collision happened (this is a simplified example)
+        dx = abs(block.block_turtle.xcor() - ball.xcor())
+        dy = abs(block.block_turtle.ycor() - ball.ycor())
+
+    # Flip ball direction based on the collision side
+        if dx > dy:
+            ball.dx *= -1
+        else:
+            ball.dy *= -1
+
+
 
     if ball.xcor() > 490 or ball.xcor() < -490:
         ball.dx *= -1
