@@ -8,6 +8,25 @@ window.bgcolor("black")
 window.setup(width=1000, height=700)
 window.tracer(0)
 
+
+#initilaise the Block class
+class Block:
+    def __init__(self, x, y):
+        self.block_turtle = turtle.Turtle()  
+        self.block_turtle.shape("square")  
+        self.block_turtle.color("green")  
+        self.block_turtle.penup()  
+        self.set_position(x, y)  
+        
+    def set_position(self, x, y):
+        self.block_turtle.goto(x, y)  
+
+    def hide(self):
+        self.block_turtle.hideturtle() 
+
+
+
+
 def setup():
     t.penup()
     t.pencolor("white")
@@ -27,7 +46,7 @@ left_paddle = t.Turtle()
 left_paddle.speed(0)
 left_paddle.shape("square")
 left_paddle.color("black")
-left_paddle.shapesize(stretch_wid=10, stretch_len=1)
+left_paddle.shapesize(stretch_wid=7, stretch_len=1)
 left_paddle.penup()
 left_paddle.goto(-450, 0)
 
@@ -36,7 +55,7 @@ right_paddle = t.Turtle()
 right_paddle.speed(0)
 right_paddle.shape("square")
 right_paddle.color("black")
-right_paddle.shapesize(stretch_wid=10, stretch_len=1)
+right_paddle.shapesize(stretch_wid=7, stretch_len=1)
 right_paddle.penup()
 right_paddle.goto(450, 0)
 
@@ -76,25 +95,25 @@ def move_paddles():
 def move_left_paddle_up():
     y = left_paddle.ycor()
     y += 10
-    if y+100 < 350:
+    if y+70 < 350:
         left_paddle.sety(y)
 
 def move_left_paddle_down():
     y = left_paddle.ycor()
     y -= 10
-    if y-100 > -350:
+    if y-70 > -350:
         left_paddle.sety(y)
 
 def move_right_paddle_up():
     y = right_paddle.ycor()
     y += 10
-    if y+100 < 350:
+    if y+70 < 350:
         right_paddle.sety(y)
 
 def move_right_paddle_down():
     y = right_paddle.ycor()
     y -= 10
-    if y-100 > -350:
+    if y-70 > -350:
         right_paddle.sety(y)
 
 window.listen()
@@ -182,14 +201,16 @@ def main():
     if ball.ycor() > 340 or ball.ycor() < -340:
         ball.dy *= -1
     
-    if (ball.dx > 0) and (ball.xcor() > 440 and ball.xcor() < 450) and (ball.ycor() > right_paddle.ycor() - 100 and ball.ycor() < right_paddle.ycor() + 100):
+    if (ball.dx > 0) and (ball.xcor() > 440 and ball.xcor() < 450) and (ball.ycor() > right_paddle.ycor() - 70 and ball.ycor() < right_paddle.ycor() + 100):
         ball.dx *= -1
     
-    if (ball.dx < 0) and (ball.xcor() < -440 and ball.xcor() > -450) and (ball.ycor() > left_paddle.ycor() - 100 and ball.ycor() < left_paddle.ycor() + 100):
+    if (ball.dx < 0) and (ball.xcor() < -440 and ball.xcor() > -450) and (ball.ycor() > left_paddle.ycor() - 70 and ball.ycor() < left_paddle.ycor() + 100):
         ball.dx *= -1
+
 
 
 setup()
 main()
 
 t.done()
+
