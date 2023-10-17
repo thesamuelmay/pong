@@ -140,9 +140,9 @@ block_list = []
 # Constants
 block_width = 10
 block_height = 10
-gap = 13
-number_of_rows = 10
-number_of_columns = 3
+gap = 20
+number_of_rows = 30
+number_of_columns = 5
 
 # Calculate total dimensions
 total_width = (block_width * number_of_columns) + (gap * (number_of_columns - 1))
