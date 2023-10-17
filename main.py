@@ -28,6 +28,10 @@ class Block:
 def is_collision(block, ball):
     return abs(block.block_turtle.xcor() - ball.xcor()) < 10 and abs(block.block_turtle.ycor() - ball.ycor()) < 10
 
+def collision(block,ball):
+    return abs(ball.distance(block.block_turtle)) <30
+
+
 
 def setup():
     t.penup()
@@ -181,10 +185,12 @@ def main():
 
 
 
-
  gameover = False
  global current_time
  while gameover == False:
+    dist = ball.distance(left_paddle)
+    if dist < 20:
+     print("distance"+ str(dist))
     move_paddles()
     window.update()
     x = ball.xcor()
@@ -226,7 +232,7 @@ def main():
     ball.setx(ball.xcor() + ball.dx)
     ball.sety(ball.ycor() + ball.dy)
     for block in block_list:
-     if is_collision(block, ball):  # Assuming you have a function to check collision
+     if collision(block, ball):  # Assuming you have a function to check collision
         block.hide()
         block_list.remove(block)
 
