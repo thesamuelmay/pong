@@ -140,33 +140,36 @@ gameover = False
   
 winner_count_left = 0 
 winner_count_right = 0
-
 block_list = []
+def blocks():
+ global block_list
 
-# Constants
-block_width = 10
-block_height = 10
-gap = 20
-number_of_rows = 30
-number_of_columns = 5
+ # Constants
+ block_width = 10
+ block_height = 10
+ gap = 20
+ number_of_rows = 24
+ number_of_columns = 10
 
-# Calculate total dimensions
-total_width = (block_width * number_of_columns) + (gap * (number_of_columns - 1))
-total_height = (block_height * number_of_rows) + (gap * (number_of_rows - 1))
+ # Calculate total dimensions
+ total_width = (block_width * number_of_columns) + (gap * (number_of_columns - 1))
+ total_height = (block_height * number_of_rows) + (gap * (number_of_rows - 1))
 
-# Calculate starting points
-starting_x = -total_width / 2
-starting_y = total_height / 2
+ # Calculate starting points
+ starting_x = -total_width / 2
+ starting_y = total_height / 2
 
-for row in range(number_of_rows):
-    for col in range(number_of_columns):
-        x = starting_x + (block_width + gap) * col
-        y = starting_y - (block_height + gap) * row
-        block = Block(x, y)  # Instantiate a Block object
-        block.set_position(x, y)
-        block_list.append(block)
+ for row in range(number_of_rows):
+     for col in range(number_of_columns):
+         x = starting_x + (block_width + gap) * col
+         y = starting_y - (block_height + gap) * row
+         block = Block(x, y)  # Instantiate a Block object
+         block.set_position(x, y)
+         block_list.append(block)
 
-setup()
+
+
+
 def main():
  global winner_count_right
  global winner_count_left
@@ -189,6 +192,7 @@ def main():
 
  gameover = False
  global current_time
+ global block_list
  while gameover == False:
     dist = ball.distance(left_paddle)
     if dist < 20:
@@ -234,6 +238,10 @@ def main():
     ball.setx(ball.xcor() + ball.dx)
     ball.sety(ball.ycor() + ball.dy)
     for block in block_list:
+     
+     if block.block_turtle.xcor() > 30 and block.block_turtle.xcor() <-30:
+        block.hide()
+        block_list.remove(block)
      if collision(block, ball):  # Assuming you have a function to check collision
         block.hide()
         block_list.remove(block)
@@ -256,14 +264,14 @@ def main():
     if ball.ycor() > 340 or ball.ycor() < -340:
         ball.dy *= -1
     
-    if (ball.dx > 0) and (ball.xcor() > 440 and ball.xcor() < 450) and (ball.ycor() > right_paddle.ycor() - 70 and ball.ycor() < right_paddle.ycor() + 100):
+    if (ball.dx > 0) and (ball.xcor() > 420 and ball.xcor() < 450) and (ball.ycor() > right_paddle.ycor() - 70 and ball.ycor() < right_paddle.ycor() + 100):
         ball.dx *= -1
     
-    if (ball.dx < 0) and (ball.xcor() < -440 and ball.xcor() > -450) and (ball.ycor() > left_paddle.ycor() - 70 and ball.ycor() < left_paddle.ycor() + 100):
+    if (ball.dx < 0) and (ball.xcor() < -420 and ball.xcor() > -450) and (ball.ycor() > left_paddle.ycor() - 70 and ball.ycor() < left_paddle.ycor() + 100):
         ball.dx *= -1
     
 
-
+blocks()
 setup()
 main()
 
