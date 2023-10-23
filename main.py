@@ -33,6 +33,8 @@ def collision(block,ball):
 
 
 
+
+
 def setup():
     t.penup()
     t.pencolor("white")
@@ -259,7 +261,7 @@ def main():
     
     if (ball.dx < 0) and (ball.xcor() < -440 and ball.xcor() > -450) and (ball.ycor() > left_paddle.ycor() - 70 and ball.ycor() < left_paddle.ycor() + 100):
         ball.dx *= -1
-
+    
 
 
 setup()
