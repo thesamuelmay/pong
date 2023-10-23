@@ -12,7 +12,7 @@ window.tracer(0)
 #initilaise the Block class
 class Block:
     def __init__(self, x, y):
-        self.block_turtle = turtle.Turtle()  
+        self.block_turtle = t.Turtle()  
         self.block_turtle.shape("square")  
         self.block_turtle.color("green")  
         self.block_turtle.penup()  
@@ -23,6 +23,14 @@ class Block:
 
     def hide(self):
         self.block_turtle.hideturtle() 
+
+
+def is_collision(block, ball):
+    return abs(block.block_turtle.xcor() - ball.xcor()) < 10 and abs(block.block_turtle.ycor() - ball.ycor()) < 10
+
+def collision(block,ball):
+    return abs(ball.distance(block.block_turtle)) <30
+
 
 
 
@@ -133,6 +141,31 @@ gameover = False
 winner_count_left = 0 
 winner_count_right = 0
 
+block_list = []
+
+# Constants
+block_width = 10
+block_height = 10
+gap = 20
+number_of_rows = 30
+number_of_columns = 5
+
+# Calculate total dimensions
+total_width = (block_width * number_of_columns) + (gap * (number_of_columns - 1))
+total_height = (block_height * number_of_rows) + (gap * (number_of_rows - 1))
+
+# Calculate starting points
+starting_x = -total_width / 2
+starting_y = total_height / 2
+
+for row in range(number_of_rows):
+    for col in range(number_of_columns):
+        x = starting_x + (block_width + gap) * col
+        y = starting_y - (block_height + gap) * row
+        block = Block(x, y)  # Instantiate a Block object
+        block.set_position(x, y)
+        block_list.append(block)
+
 setup()
 def main():
  global winner_count_right
@@ -151,9 +184,15 @@ def main():
  count_display_left.write('0',font=('impact',30,'normal'))
  count_display_right.write('0',font=('impact',30,'normal'))
 
+
+
+
  gameover = False
  global current_time
  while gameover == False:
+    dist = ball.distance(left_paddle)
+    if dist < 20:
+     print("distance"+ str(dist))
     move_paddles()
     window.update()
     x = ball.xcor()
@@ -194,6 +233,22 @@ def main():
     
     ball.setx(ball.xcor() + ball.dx)
     ball.sety(ball.ycor() + ball.dy)
+    for block in block_list:
+     if collision(block, ball):  # Assuming you have a function to check collision
+        block.hide()
+        block_list.remove(block)
+
+    # Determine the side where the collision happened (this is a simplified example)
+        dx = abs(block.block_turtle.xcor() - ball.xcor())
+        dy = abs(block.block_turtle.ycor() - ball.ycor())
+
+    # Flip ball direction based on the collision side
+        if dx > dy:
+            ball.dx *= -1
+        else:
+            ball.dy *= -1
+
+
 
     if ball.xcor() > 490 or ball.xcor() < -490:
         ball.dx *= -1
@@ -206,7 +261,7 @@ def main():
     
     if (ball.dx < 0) and (ball.xcor() < -440 and ball.xcor() > -450) and (ball.ycor() > left_paddle.ycor() - 70 and ball.ycor() < left_paddle.ycor() + 100):
         ball.dx *= -1
-
+    
 
 
 setup()
