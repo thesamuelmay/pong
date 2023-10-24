@@ -2,6 +2,9 @@
 
 import time
 import turtle as t
+
+
+
 # Initialize a game state variable
 
 block_list = []
@@ -9,6 +12,12 @@ current_time = time.time()
 winner_count_left = 0
 winner_count_left = 0
 home_initialised = False
+
+window = t.Screen()
+window.addshape('local.gif')
+window.bgpic("bg.gif")
+window.setup(width=1000, height=700)
+window.tracer(0)
 
 def set_game_state(state):
     global current_state
@@ -21,40 +30,35 @@ def local_state(x,y):
 
 # Function to handle home screen logic
 def home_screen():
-    global button_local,home_initialised
-    window = t.Screen()
-    window.bgcolor("black")
-    window.setup(width=1000, height=700)
-    window.tracer(0)
+    global button_local,home_initialised,window
+    
     #Init Local button
     if home_initialised == False:
       home_initialised = True
       print(home_initialised)
       button_local = t.Turtle()
-      button_local.shape("square")
-      button_local.color("white")
-      button_local.shapesize(stretch_wid=3, stretch_len=7)
+      button_local.shape('local.gif')
+      button_local.shapesize(stretch_wid=0.001, stretch_len=1000)
+      
       button_local.penup()
       button_local.goto(0,60)
       button_local.onclick(local_state)
-      print("test")
     window.update()
 
+
 def hide_home():
-  global button_local
+  global button_local,window
   button_local.hideturtle()
+  
     
 
 # Function for LocalCoOp state
 def local_coop():
-    global current_game_state,block_list,current_time,winner_count_left,winner_count_right
+    global current_game_state,block_list,current_time,winner_count_left,winner_count_right,window
     # Your existing game code goes here, integrated as part of local_coop
     hide_home()
-    window = t.Screen()
     window.bgcolor("black")
-    window.setup(width=1000, height=700)
-    window.tracer(0)
-
+    window.bgpic("nopic")
 
     #initilaise the Block class
     class Block:
