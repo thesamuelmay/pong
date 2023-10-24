@@ -2,26 +2,54 @@
 
 import time
 import turtle as t
-
 # Initialize a game state variable
-current_game_state = "HomeScreen"
+
 block_list = []
 current_time = time.time()
 winner_count_left = 0
 winner_count_left = 0
+home_initialised = False
 
-# Function for HomeScreen state
+def set_game_state(state):
+    global current_state
+    current_state = state
+
+def local_state(x,y): 
+    global current_state
+    current_state = 'local'
+    # some motion 
+
+# Function to handle home screen logic
 def home_screen():
-    # Logic for displaying home screen
-    global current_game_state
-    # Code to display options and transition to local_coop or online_coop
-    # For now, directly transitioning to LocalCoOp for demonstration
-    current_game_state = "LocalCoOp"
+    global button_local,home_initialised
+    window = t.Screen()
+    window.bgcolor("black")
+    window.setup(width=1000, height=700)
+    window.tracer(0)
+    #Init Local button
+    if home_initialised == False:
+      home_initialised = True
+      print(home_initialised)
+      button_local = t.Turtle()
+      button_local.shape("square")
+      button_local.color("white")
+      button_local.shapesize(stretch_wid=3, stretch_len=7)
+      button_local.penup()
+      button_local.goto(0,60)
+      button_local.onclick(local_state)
+      print("test")
+    window.update()
+
+def hide_home():
+  global button_local
+  button_local.hideturtle()
+    
 
 # Function for LocalCoOp state
 def local_coop():
     global current_game_state,block_list,current_time,winner_count_left,winner_count_right
     # Your existing game code goes here, integrated as part of local_coop
+    hide_home()
     window = t.Screen()
     window.bgcolor("black")
     window.setup(width=1000, height=700)
@@ -295,13 +323,14 @@ def local_coop():
     main()
 
     t.done()
+    pass
 
     # ... (rest of your existing code)
 
     # At the end of the game, you can change the current_game_state to 'GameOver' or 'HomeScreen', like this:
     # current_game_state = "GameOver"
+ # Function for OnlineCoOp state
 
-# Function for OnlineCoOp state
 def online_coop():
     # Logic for running the online co-op game
     pass
@@ -311,17 +340,28 @@ def game_over():
     # Logic for displaying game over screen
     pass
 
-# Main loop to check game state
+
+
+
+
+# Initialize turtle window
+
+# Start game at the home screen
+set_game_state("home")
+
+# Main game loop
 while True:
-    if current_game_state == "HomeScreen":
+    if current_state == "home":
         home_screen()
-    elif current_game_state == "LocalCoOp":
+    elif current_state == "local":
+        home_displayed = False  # Reset flag since we're no longer in home screen
         local_coop()
-        break  # Exiting the loop after local_coop finishes, for demonstration
-    elif current_game_state == "OnlineCoOp":
+    elif current_state == "online":
+        home_displayed = False  # Reset flag since we're no longer in home screen
         online_coop()
-    elif current_game_state == "GameOver":
-        game_over()
+        
+    time.sleep(0.1)  # Add a slight delay to avoid overwhelming the CPU
+
 
 
 
