@@ -12,6 +12,8 @@ current_time = time.time()
 winner_count_left = 0
 winner_count_left = 0
 home_initialised = False
+launch_player = 'right'
+ball_moving = False
 
 window = t.Screen()
 window.addshape('local.gif')
@@ -123,15 +125,27 @@ def local_coop():
     ball.shape("square")
     ball.color("black")
     ball.penup()
-    ball.goto(0, 0)
-    ball.dx = 4.5
-    ball.dy = -4.5
+    ball.goto(right_paddle.xcor() - 20, right_paddle.ycor())
+    ball.dx = 6.5
+    ball.dy = -6.5
 
 
 
     current_time = time.time()
+
     time_delta = 0
 
+
+    def launch_ball():
+            global ball_moving,launch_player
+            if not ball_moving:
+                if launch_player == 'right':
+                    ball.goto(0,0)
+                    ball.goto(right_paddle.xcor() - 20, right_paddle.ycor())
+                else:
+                    ball.goto(0,0)
+                    ball.goto(left_paddle.xcor() + 20, left_paddle.ycor())
+                ball_moving = True
 
     pressed_keys = set()
 
@@ -184,6 +198,8 @@ def local_coop():
     window.onkeyrelease(lambda: on_key_release('s'), 's')
     window.onkeyrelease(lambda: on_key_release('Up'), 'Up')
     window.onkeyrelease(lambda: on_key_release('Down'), 'Down')
+    window.onkeypress(launch_ball, 'space')
+
 
 
 
@@ -200,7 +216,7 @@ def local_coop():
      block_height = 10
      gap = 20
      number_of_rows = 24
-     number_of_columns = 10
+     number_of_columns = 4
 
      # Calculate total dimensions
      total_width = (block_width * number_of_columns) + (gap * (number_of_columns - 1))
@@ -242,7 +258,7 @@ def local_coop():
 
 
      gameover = False
-     global current_time
+     global current_time,ball_moving,launch_player
      global block_list
      while gameover == False:
         dist = ball.distance(left_paddle)
@@ -267,10 +283,15 @@ def local_coop():
           count_display_left.write(winner_count_left,font=('impact',30,'normal'))
           count_display_right.write(winner_count_right,font=('impact',30,'normal'))
 
-          
-          ball.goto(0,0)
+          test = ball.goto(right_paddle.xcor()-40,right_paddle.ycor())
+          print(test)
+          if x < 0:
+              launch_player = 'left'
+          else:
+              launch_player = 'right'
+          launch_ball()
+          ball_moving = False
           gameover=False
-          
 
 
         # Calculate the time delta
@@ -278,16 +299,24 @@ def local_coop():
         time_delta = new_time - current_time
         current_time = new_time
         
-        # Update the ball position based on time delta
-        ball.setx(ball.xcor() + (ball.dx * time_delta * 60))
-        ball.sety(ball.ycor() + (ball.dy * time_delta * 60))
+        if ball_moving == True:
+            ball.setx(ball.xcor() + (ball.dx * time_delta * 60))
+            ball.sety(ball.ycor() + (ball.dy * time_delta * 60))
+        
+        if ball_moving == False:
+          if launch_player == 'right':
+            ball.sety(right_paddle.ycor())   
+          else:
+            ball.sety(left_paddle.ycor())
+
+
 
         move_paddles()
         window.update()
         
         
-        ball.setx(ball.xcor() + ball.dx)
-        ball.sety(ball.ycor() + ball.dy)
+        
+
         for block in block_list:
          
          if block.block_turtle.xcor() > 30 and block.block_turtle.xcor() <-30:
