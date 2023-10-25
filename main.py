@@ -140,10 +140,10 @@ def local_coop():
             global ball_moving,launch_player
             if not ball_moving:
                 if launch_player == 'right':
-                    ball.goto(0,0)
-                    ball.goto(right_paddle.xcor() - 20, right_paddle.ycor())
+                    
+                    ball.goto(right_paddle.xcor() - 50, right_paddle.ycor())
                 else:
-                    ball.goto(0,0)
+                    
                     ball.goto(left_paddle.xcor() + 20, left_paddle.ycor())
                 ball_moving = True
 
@@ -158,7 +158,7 @@ def local_coop():
     def move_paddles():
         if 'w' in pressed_keys:
             move_left_paddle_up()
-        if 's' in pressed_keys:
+        if 'x' in pressed_keys:
             move_left_paddle_down()
         if 'Up' in pressed_keys:
             move_right_paddle_up()
@@ -191,11 +191,11 @@ def local_coop():
 
     window.listen()
     window.onkeypress(lambda: on_key_press('w'), 'w')
-    window.onkeypress(lambda: on_key_press('s'), 's')
+    window.onkeypress(lambda: on_key_press('x'), 'x')
     window.onkeypress(lambda: on_key_press('Up'), 'Up')
     window.onkeypress(lambda: on_key_press('Down'), 'Down')
     window.onkeyrelease(lambda: on_key_release('w'), 'w')
-    window.onkeyrelease(lambda: on_key_release('s'), 's')
+    window.onkeyrelease(lambda: on_key_release('x'), 'x')
     window.onkeyrelease(lambda: on_key_release('Up'), 'Up')
     window.onkeyrelease(lambda: on_key_release('Down'), 'Down')
     window.onkeypress(launch_ball, 'space')
@@ -216,7 +216,7 @@ def local_coop():
      block_height = 10
      gap = 20
      number_of_rows = 24
-     number_of_columns = 4
+     number_of_columns = 2
 
      # Calculate total dimensions
      total_width = (block_width * number_of_columns) + (gap * (number_of_columns - 1))
@@ -286,9 +286,9 @@ def local_coop():
           test = ball.goto(right_paddle.xcor()-40,right_paddle.ycor())
           print(test)
           if x < 0:
-              launch_player = 'left'
-          else:
               launch_player = 'right'
+          else:
+              launch_player = 'left'
           launch_ball()
           ball_moving = False
           gameover=False
@@ -305,9 +305,11 @@ def local_coop():
         
         if ball_moving == False:
           if launch_player == 'right':
-            ball.sety(right_paddle.ycor())   
+            ball.sety(right_paddle.ycor()) 
+            ball.setx(right_paddle.xcor() - 20)  
           else:
             ball.sety(left_paddle.ycor())
+            ball.setx(left_paddle.xcor() + 20)
 
 
 
