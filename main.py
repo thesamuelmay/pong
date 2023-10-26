@@ -12,11 +12,13 @@ current_time = time.time()
 winner_count_left = 0
 winner_count_left = 0
 home_initialised = False
+game_over_initialised = False
 launch_player = 'right'
 ball_moving = False
 last_hit_player = None
 block_break_count_left = 0
 block_break_count_right = 0
+end_match = False
 
 window = t.Screen()
 window.addshape('local.gif')
@@ -59,8 +61,10 @@ def hide_home():
 
 # Function for LocalCoOp state
 def local_coop():
-    global current_game_state,block_list,current_time,winner_count_left,winner_count_right,window,last_hit_player, block_break_count_left, block_break_count_right
+    global current_game_state,block_list,current_time,winner_count_left,winner_count_right,window,last_hit_player, block_break_count_left, block_break_count_right,end_match
     # Your existing game code goes here, integrated as part of local_coop
+
+    global ball,left_paddle,right_paddle,count_display_right,count_display_left,block_break_display_right,block_break_display_left
     hide_home()
     window.bgcolor("black")
     window.bgpic("nopic")
@@ -208,8 +212,8 @@ def local_coop():
 
     gameover = False
       
-    winner_count_left = 0 
-    winner_count_right = 0
+    winner_count_left = 4
+    winner_count_right = 4
     block_list = []
     def blocks():
      global block_list
@@ -243,7 +247,8 @@ def local_coop():
     def main():
      global winner_count_right
      global winner_count_left
-     global last_hit_player, block_break_count_left, block_break_count_right
+     global last_hit_player, block_break_count_left, block_break_count_right,end_match
+     global ball,left_paddle,right_paddle,count_display_right,count_display_left,block_break_display_right,block_break_display_left
 
      count_display_left = t.Turtle()
      count_display_right = t.Turtle()
@@ -380,14 +385,22 @@ def local_coop():
         if (ball.dx < 0) and (ball.xcor() < -420 and ball.xcor() > -450) and (ball.ycor() > left_paddle.ycor() - 70 and ball.ycor() < left_paddle.ycor() + 100):
             ball.dx *= -1
             last_hit_player = 'left'
+
+
+        if end_match == False :
+          if winner_count_left >= 5 or winner_count_right >= 5:
+           print("game over!!")
+           end_match = True
+           
+           set_game_state("over")
+           print(current_state)
+           window.update()
+           break
         
 
     blocks()
     setup()
     main()
-
-    t.done()
-    pass
 
     # ... (rest of your existing code)
 
@@ -402,7 +415,31 @@ def online_coop():
 # Function for GameOver state (Optional)
 def game_over():
     # Logic for displaying game over screen
-    pass
+    global window,ball,left_paddle,right_paddle,count_display_right,count_display_left,block_break_display_right,block_break_display_left,game_over_initialised
+    if game_over_initialised == False:
+     game_over_initialised = True
+     t.clear()
+     count_display_left.clear()
+     count_display_right.clear()
+     block_break_display_left.clear()
+     block_break_display_right.clear()
+     print("test")
+     ball.hideturtle()
+     left_paddle.goto(300,500)
+     print(ball.xcor())
+     right_paddle.hideturtle()
+     count_display_right.hideturtle()
+     count_display_left.hideturtle()
+     block_break_display_right.hideturtle()
+     block_break_display_left.hideturtle()
+
+
+     for block in block_list:
+      block.hide()
+
+     window.update()
+
+    
 
 
 
@@ -423,6 +460,8 @@ while True:
     elif current_state == "online":
         home_displayed = False  # Reset flag since we're no longer in home screen
         online_coop()
+    elif current_state == 'over':
+      game_over()
         
     time.sleep(0.1)  # Add a slight delay to avoid overwhelming the CPU
 
