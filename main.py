@@ -266,8 +266,8 @@ def local_coop():
      block_break_display_right.speed(0)
      block_break_display_left.penup()
      block_break_display_right.penup()
-     block_break_display_left.setpos(-450, -300)
-     block_break_display_right.setpos(400, -300)
+     block_break_display_left.setpos(-450, 270)
+     block_break_display_right.setpos(390, 270)
      block_break_display_left.write('Blocks: 0', font=('impact', 20, 'normal'))
      block_break_display_right.write('Blocks: 0', font=('impact', 20, 'normal'))
 
