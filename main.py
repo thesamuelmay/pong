@@ -14,6 +14,9 @@ winner_count_left = 0
 home_initialised = False
 launch_player = 'right'
 ball_moving = False
+last_hit_player = None
+block_break_count_left = 0
+block_break_count_right = 0
 
 window = t.Screen()
 window.addshape('local.gif')
@@ -56,7 +59,7 @@ def hide_home():
 
 # Function for LocalCoOp state
 def local_coop():
-    global current_game_state,block_list,current_time,winner_count_left,winner_count_right,window
+    global current_game_state,block_list,current_time,winner_count_left,winner_count_right,window,last_hit_player, block_break_count_left, block_break_count_right
     # Your existing game code goes here, integrated as part of local_coop
     hide_home()
     window.bgcolor("black")
@@ -158,7 +161,7 @@ def local_coop():
     def move_paddles():
         if 'w' in pressed_keys:
             move_left_paddle_up()
-        if 'x' in pressed_keys:
+        if 's' in pressed_keys:
             move_left_paddle_down()
         if 'Up' in pressed_keys:
             move_right_paddle_up()
@@ -191,11 +194,11 @@ def local_coop():
 
     window.listen()
     window.onkeypress(lambda: on_key_press('w'), 'w')
-    window.onkeypress(lambda: on_key_press('x'), 'x')
+    window.onkeypress(lambda: on_key_press('s'), 's')
     window.onkeypress(lambda: on_key_press('Up'), 'Up')
     window.onkeypress(lambda: on_key_press('Down'), 'Down')
     window.onkeyrelease(lambda: on_key_release('w'), 'w')
-    window.onkeyrelease(lambda: on_key_release('x'), 'x')
+    window.onkeyrelease(lambda: on_key_release('s'), 's')
     window.onkeyrelease(lambda: on_key_release('Up'), 'Up')
     window.onkeyrelease(lambda: on_key_release('Down'), 'Down')
     window.onkeypress(launch_ball, 'space')
@@ -240,6 +243,7 @@ def local_coop():
     def main():
      global winner_count_right
      global winner_count_left
+     global last_hit_player, block_break_count_left, block_break_count_right
 
      count_display_left = t.Turtle()
      count_display_right = t.Turtle()
@@ -253,6 +257,21 @@ def local_coop():
      count_display_right.setpos(450,300)
      count_display_left.write('0',font=('impact',30,'normal'))
      count_display_right.write('0',font=('impact',30,'normal'))
+
+     block_break_display_left = t.Turtle()
+     block_break_display_right = t.Turtle()
+     block_break_display_left.hideturtle()
+     block_break_display_right.hideturtle()
+     block_break_display_left.speed(0)
+     block_break_display_right.speed(0)
+     block_break_display_left.penup()
+     block_break_display_right.penup()
+     block_break_display_left.setpos(-450, -300)
+     block_break_display_right.setpos(400, -300)
+     block_break_display_left.write('Blocks: 0', font=('impact', 20, 'normal'))
+     block_break_display_right.write('Blocks: 0', font=('impact', 20, 'normal'))
+
+
 
 
 
@@ -321,12 +340,20 @@ def local_coop():
 
         for block in block_list:
          
-         if block.block_turtle.xcor() > 30 and block.block_turtle.xcor() <-30:
-            block.hide()
-            block_list.remove(block)
          if collision(block, ball):  # Assuming you have a function to check collision
             block.hide()
             block_list.remove(block)
+
+            if last_hit_player == 'left':
+                    block_break_count_left += 1
+                    block_break_display_left.clear()
+                    block_break_display_left.write('Blocks: ' + str(block_break_count_left), font=('impact', 20, 'normal'))
+            elif last_hit_player == 'right':
+                    block_break_count_right += 1
+                    block_break_display_right.clear()
+                    block_break_display_right.write('Blocks: ' + str(block_break_count_right), font=('impact', 20, 'normal'))
+
+
 
         # Determine the side where the collision happened (this is a simplified example)
             dx = abs(block.block_turtle.xcor() - ball.xcor())
@@ -348,9 +375,11 @@ def local_coop():
         
         if (ball.dx > 0) and (ball.xcor() > 420 and ball.xcor() < 450) and (ball.ycor() > right_paddle.ycor() - 70 and ball.ycor() < right_paddle.ycor() + 100):
             ball.dx *= -1
+            last_hit_player = 'right'
         
         if (ball.dx < 0) and (ball.xcor() < -420 and ball.xcor() > -450) and (ball.ycor() > left_paddle.ycor() - 70 and ball.ycor() < left_paddle.ycor() + 100):
             ball.dx *= -1
+            last_hit_player = 'left'
         
 
     blocks()
