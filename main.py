@@ -212,8 +212,8 @@ def local_coop():
 
     gameover = False
       
-    winner_count_left = 4
-    winner_count_right = 4
+    winner_count_left = 0
+    winner_count_right = 3
     block_list = []
     def blocks():
      global block_list
@@ -415,7 +415,13 @@ def online_coop():
 # Function for GameOver state (Optional)
 def game_over():
     # Logic for displaying game over screen
-    global window,ball,left_paddle,right_paddle,count_display_right,count_display_left,block_break_display_right,block_break_display_left,game_over_initialised
+    global window,ball,left_paddle,right_paddle,count_display_right,count_display_left,block_break_display_right,block_break_display_left,game_over_initialised,winner_count_left,winner_count_right,block_break_count_right,block_break_count_left
+    
+    winner = t.Turtle()
+    winner.speed(0)
+    winner.goto(0,150)
+    winner.pencolor("white")
+    
     if game_over_initialised == False:
      game_over_initialised = True
      t.clear()
@@ -433,11 +439,25 @@ def game_over():
      block_break_display_right.hideturtle()
      block_break_display_left.hideturtle()
 
+     total_points_left = (winner_count_left*5) + (block_break_count_left*2)
+     total_points_right = (winner_count_right*5) + (block_break_count_right*2)
+
 
      for block in block_list:
       block.hide()
-
-     window.update()
+      
+     print(total_points_right)
+     print(total_points_left)
+     if total_points_right > total_points_right:
+            winner.clear()
+            winner.write('Winner is left with ' + str(total_points_left) + ' points!', font=('impact', 30, 'normal'))
+            print("test")
+     else:
+            winner.clear()
+            winner.write('Winner is right with ' + str(total_points_right) + ' points!', font=('impact', 30, 'normal'))
+            print("test")
+            
+    window.update()
 
     
 
