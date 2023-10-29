@@ -46,7 +46,8 @@ def home_state(x,y):
 def home_screen():
     global button_local,home_initialised,window
     global home_button
-
+    print("Your home!")
+    print(home_initialised)
 
     
     #Init Local button
@@ -428,10 +429,12 @@ def game_over():
     # Logic for displaying game over screen
     global window,ball,left_paddle,right_paddle,count_display_right,count_display_left,block_break_display_right,block_break_display_left,game_over_initialised,winner_count_left,winner_count_right,block_break_count_right,block_break_count_left,home_button_exists,home_button
 
+    global winner
     window.bgpic("bg.gif")
     winner = t.Turtle()
     winner.speed(0)
-    winner.goto(0,150)
+    winner.goto(-175,150)
+    winner.hideturtle()
     winner.pencolor("white")
     
     if game_over_initialised == False:
@@ -501,17 +504,18 @@ set_game_state("home")
 while True:
     print("in loop")
     if current_state == "home":
-        home_screen()
         if home_button_exists == True:
             home_button.hideturtle()
+            winner.clear()
+        home_screen()
     elif current_state == "local":
-        home_displayed = False  # Reset flag since we're no longer in home screen
+        home_initialised = False  # Reset flag since we're no longer in home screen
         local_coop()
     elif current_state == "online":
-        home_displayed = False  # Reset flag since we're no longer in home screen
+        home_initialised = False  # Reset flag since we're no longer in home screen
         online_coop()
     elif current_state == 'over':
-        home_displayed = False
+        home_initialised = False
         game_over()
         
     time.sleep(0.1)  # Add a slight delay to avoid overwhelming the CPU
