@@ -125,7 +125,7 @@ def local_coop():
     left_paddle = t.Turtle()
     left_paddle.speed(0)
     left_paddle.shape("square")
-    left_paddle.color("black")
+    left_paddle.color("red")
     left_paddle.shapesize(stretch_wid=7, stretch_len=1)
     left_paddle.penup()
     left_paddle.goto(-450, 0)
@@ -134,7 +134,7 @@ def local_coop():
     right_paddle = t.Turtle()
     right_paddle.speed(0)
     right_paddle.shape("square")
-    right_paddle.color("black")
+    right_paddle.color("blue")
     right_paddle.shapesize(stretch_wid=7, stretch_len=1)
     right_paddle.penup()
     right_paddle.goto(450, 0)
@@ -465,11 +465,11 @@ def game_over():
      print(total_points_left)
      if total_points_right > total_points_right:
             winner.clear()
-            winner.write('Winner is left with ' + str(total_points_left) + ' points!', font=('impact', 30, 'normal'))
+            winner.write('Winner is red with ' + str(total_points_left) + ' points!', font=('impact', 30, 'normal'))
             print("test")
      else:
             winner.clear()
-            winner.write('Winner is right with ' + str(total_points_right) + ' points!', font=('impact', 30, 'normal'))
+            winner.write('Winner is blue with ' + str(total_points_right) + ' points!', font=('impact', 30, 'normal'))
             print("test")
 
     home_button = t.Turtle()
