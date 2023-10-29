@@ -19,9 +19,11 @@ last_hit_player = None
 block_break_count_left = 0
 block_break_count_right = 0
 end_match = False
+home_button_exists = False
 
 window = t.Screen()
 window.addshape('local.gif')
+window.addshape('home.gif')
 window.bgpic("bg.gif")
 window.setup(width=1000, height=700)
 window.tracer(0)
@@ -35,15 +37,24 @@ def local_state(x,y):
     current_state = 'local'
     # some motion 
 
+def home_state(x,y): 
+    global current_state
+    print(current_state)
+    current_state = 'home'
+
 # Function to handle home screen logic
 def home_screen():
     global button_local,home_initialised,window
+    global home_button
+
+
     
     #Init Local button
     if home_initialised == False:
       home_initialised = True
       print(home_initialised)
       button_local = t.Turtle()
+      button_local.showturtle()
       button_local.shape('local.gif')
       button_local.shapesize(stretch_wid=0.001, stretch_len=1000)
       
@@ -133,8 +144,8 @@ def local_coop():
     ball.color("black")
     ball.penup()
     ball.goto(right_paddle.xcor() - 20, right_paddle.ycor())
-    ball.dx = 6.5
-    ball.dy = -6.5
+    ball.dx = 8.5
+    ball.dy = -8.5
 
 
 
@@ -212,8 +223,8 @@ def local_coop():
 
     gameover = False
       
-    winner_count_left = 0
-    winner_count_right = 3
+    winner_count_left = 4
+    winner_count_right = 4 
     block_list = []
     def blocks():
      global block_list
@@ -223,7 +234,7 @@ def local_coop():
      block_height = 10
      gap = 20
      number_of_rows = 24
-     number_of_columns = 2
+     number_of_columns = 5
 
      # Calculate total dimensions
      total_width = (block_width * number_of_columns) + (gap * (number_of_columns - 1))
@@ -415,15 +426,15 @@ def online_coop():
 # Function for GameOver state (Optional)
 def game_over():
     # Logic for displaying game over screen
-    global window,ball,left_paddle,right_paddle,count_display_right,count_display_left,block_break_display_right,block_break_display_left,game_over_initialised,winner_count_left,winner_count_right,block_break_count_right,block_break_count_left
-    
+    global window,ball,left_paddle,right_paddle,count_display_right,count_display_left,block_break_display_right,block_break_display_left,game_over_initialised,winner_count_left,winner_count_right,block_break_count_right,block_break_count_left,home_button_exists,home_button
+
+    window.bgpic("bg.gif")
     winner = t.Turtle()
     winner.speed(0)
     winner.goto(0,150)
     winner.pencolor("white")
     
     if game_over_initialised == False:
-     game_over_initialised = True
      t.clear()
      count_display_left.clear()
      count_display_right.clear()
@@ -439,13 +450,14 @@ def game_over():
      block_break_display_right.hideturtle()
      block_break_display_left.hideturtle()
 
-     total_points_left = (winner_count_left*5) + (block_break_count_left*2)
-     total_points_right = (winner_count_right*5) + (block_break_count_right*2)
+     total_points_left = (winner_count_left*5) + block_break_count_left
+     total_points_right = (winner_count_right*5) + block_break_count_right
+
 
 
      for block in block_list:
       block.hide()
-      
+    
      print(total_points_right)
      print(total_points_left)
      if total_points_right > total_points_right:
@@ -456,8 +468,23 @@ def game_over():
             winner.clear()
             winner.write('Winner is right with ' + str(total_points_right) + ' points!', font=('impact', 30, 'normal'))
             print("test")
-            
-    window.update()
+
+    home_button = t.Turtle()
+    home_button.shape('home.gif')
+    home_button.shapesize(stretch_wid=0.001, stretch_len=1000)
+    
+    home_button.penup()
+    home_button.goto(0,0)
+    home_button.onclick(home_state)
+    home_initialised = False
+    home_button_exists = True
+    
+    while current_state == 'over':
+     window.update()
+
+    
+    
+
 
     
 
@@ -472,8 +499,11 @@ set_game_state("home")
 
 # Main game loop
 while True:
+    print("in loop")
     if current_state == "home":
         home_screen()
+        if home_button_exists == True:
+            home_button.hideturtle()
     elif current_state == "local":
         home_displayed = False  # Reset flag since we're no longer in home screen
         local_coop()
@@ -481,7 +511,8 @@ while True:
         home_displayed = False  # Reset flag since we're no longer in home screen
         online_coop()
     elif current_state == 'over':
-      game_over()
+        home_displayed = False
+        game_over()
         
     time.sleep(0.1)  # Add a slight delay to avoid overwhelming the CPU
 
