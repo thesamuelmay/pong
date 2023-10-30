@@ -109,17 +109,19 @@ def local_coop():
 
     def setup():
         t.penup()
+        t.hideturtle()
         t.pencolor("white")
         t.fillcolor("white")
+        t.pensize(4)
         t.goto(-500, 350)
         t.pendown()
-        t.begin_fill()
+        
         for i in range(2):
             t.forward(1000)
             t.right(90)
             t.forward(700)
             t.right(90)
-        t.end_fill()
+        
 
     # Left Paddle setup
     left_paddle = t.Turtle()
@@ -142,7 +144,7 @@ def local_coop():
     ball = t.Turtle()
     ball.speed(0)
     ball.shape("square")
-    ball.color("black")
+    ball.color("white")
     ball.penup()
     ball.goto(right_paddle.xcor() - 20, right_paddle.ycor())
     ball.dx = 8.5
@@ -272,6 +274,8 @@ def local_coop():
      count_display_right.penup()
      count_display_left.setpos(-450,300)
      count_display_right.setpos(450,300)
+     count_display_left.pencolor("white")
+     count_display_right.pencolor("white")
      count_display_left.write('0',font=('impact',30,'normal'))
      count_display_right.write('0',font=('impact',30,'normal'))
 
@@ -279,6 +283,8 @@ def local_coop():
      block_break_display_right = t.Turtle()
      block_break_display_left.hideturtle()
      block_break_display_right.hideturtle()
+     block_break_display_left.pencolor("white")
+     block_break_display_right.pencolor("white")
      block_break_display_left.speed(0)
      block_break_display_right.speed(0)
      block_break_display_left.penup()
@@ -313,7 +319,6 @@ def local_coop():
               winner_count_left+=1
           print(winner_count_left)
           print(winner_count_right)
-
           count_display_right.clear()
           count_display_left.clear()
           count_display_left.write(winner_count_left,font=('impact',30,'normal'))
