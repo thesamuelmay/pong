@@ -22,6 +22,8 @@ block_break_count_left = 0
 block_break_count_right = 0
 end_match = False
 home_button_exists = False
+winner_count_left = 0
+winner_count_right = 0
 
 window = t.Screen()
 window.addshape('local.gif')
@@ -77,7 +79,7 @@ def hide_home():
 def local_coop():
     global current_game_state,block_list,current_time,winner_count_left,winner_count_right,window,last_hit_player, block_break_count_left, block_break_count_right,end_match
     # Your existing game code goes here, integrated as part of local_coop
-
+    global winner_count_left,winner_count_right,block_break_count_right,block_break_display_left
     global ball,left_paddle,right_paddle,count_display_right,count_display_left,block_break_display_right,block_break_display_left
     hide_home()
     window.bgcolor("black")
@@ -228,8 +230,10 @@ def local_coop():
 
     gameover = False
       
-    winner_count_left = 4
-    winner_count_right = 4 
+    winner_count_left = 0
+    winner_count_right = 0
+    block_break_display_right = 0
+    block_break_count_left = 0
     block_list = []
     def blocks():
      global block_list
@@ -470,7 +474,7 @@ def game_over():
     
      print(total_points_right)
      print(total_points_left)
-     if total_points_right > total_points_right:
+     if total_points_left > total_points_right:
             winner.clear()
             winner.write('Winner is red with ' + str(total_points_left) + ' points!',align="center", font=('Minecrafter', 30, 'normal'))
             print("test")
