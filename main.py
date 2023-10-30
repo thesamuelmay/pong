@@ -2,10 +2,12 @@
 
 import time
 import turtle as t
+#import pyglet
 
 
 
 # Initialize a game state variable
+#pyglet.font.add_file('Minecrafter.Reg.tff')
 
 block_list = []
 current_time = time.time()
@@ -127,7 +129,7 @@ def local_coop():
     left_paddle = t.Turtle()
     left_paddle.speed(0)
     left_paddle.shape("square")
-    left_paddle.color("red")
+    left_paddle.color("#FF4500")
     left_paddle.shapesize(stretch_wid=7, stretch_len=1)
     left_paddle.penup()
     left_paddle.goto(-450, 0)
@@ -136,7 +138,7 @@ def local_coop():
     right_paddle = t.Turtle()
     right_paddle.speed(0)
     right_paddle.shape("square")
-    right_paddle.color("blue")
+    right_paddle.color("#007BFF")
     right_paddle.shapesize(stretch_wid=7, stretch_len=1)
     right_paddle.penup()
     right_paddle.goto(450, 0)
@@ -276,8 +278,8 @@ def local_coop():
      count_display_right.setpos(450,300)
      count_display_left.pencolor("white")
      count_display_right.pencolor("white")
-     count_display_left.write('0',font=('impact',30,'normal'))
-     count_display_right.write('0',font=('impact',30,'normal'))
+     count_display_left.write('0',align="left",font=('Minecrafter',30,'normal'))
+     count_display_right.write('0',align="right",font=('Minecrafter',30,'normal'))
 
      block_break_display_left = t.Turtle()
      block_break_display_right = t.Turtle()
@@ -290,9 +292,9 @@ def local_coop():
      block_break_display_left.penup()
      block_break_display_right.penup()
      block_break_display_left.setpos(-450, 270)
-     block_break_display_right.setpos(390, 270)
-     block_break_display_left.write('Blocks: 0', font=('impact', 20, 'normal'))
-     block_break_display_right.write('Blocks: 0', font=('impact', 20, 'normal'))
+     block_break_display_right.setpos(450, 270)
+     block_break_display_left.write('Blocks: 0', align="left",font=('Minecrafter', 20, 'normal'))
+     block_break_display_right.write('Blocks: 0', align="right",font=('Minecrafter', 20, 'normal'))
 
 
 
@@ -321,8 +323,8 @@ def local_coop():
           print(winner_count_right)
           count_display_right.clear()
           count_display_left.clear()
-          count_display_left.write(winner_count_left,font=('impact',30,'normal'))
-          count_display_right.write(winner_count_right,font=('impact',30,'normal'))
+          count_display_left.write(winner_count_left,align="left",font=('Minecrafter',30,'normal'))
+          count_display_right.write(winner_count_right,align="right",font=('Minecrafter',30,'normal'))
 
           test = ball.goto(right_paddle.xcor()-40,right_paddle.ycor())
           print(test)
@@ -369,11 +371,11 @@ def local_coop():
             if last_hit_player == 'left':
                     block_break_count_left += 1
                     block_break_display_left.clear()
-                    block_break_display_left.write('Blocks: ' + str(block_break_count_left), font=('impact', 20, 'normal'))
+                    block_break_display_left.write('Blocks: ' + str(block_break_count_left),align="left", font=('Minecrafter', 20, 'normal'))
             elif last_hit_player == 'right':
                     block_break_count_right += 1
                     block_break_display_right.clear()
-                    block_break_display_right.write('Blocks: ' + str(block_break_count_right), font=('impact', 20, 'normal'))
+                    block_break_display_right.write('Blocks: ' + str(block_break_count_right),align="right",font=('Minecrafter', 20, 'normal'))
 
 
 
@@ -438,7 +440,7 @@ def game_over():
     window.bgpic("bg.gif")
     winner = t.Turtle()
     winner.speed(0)
-    winner.goto(-175,150)
+    winner.goto(0,150)
     winner.hideturtle()
     winner.pencolor("white")
     
@@ -470,11 +472,11 @@ def game_over():
      print(total_points_left)
      if total_points_right > total_points_right:
             winner.clear()
-            winner.write('Winner is red with ' + str(total_points_left) + ' points!', font=('impact', 30, 'normal'))
+            winner.write('Winner is red with ' + str(total_points_left) + ' points!',align="center", font=('Minecrafter', 30, 'normal'))
             print("test")
      else:
             winner.clear()
-            winner.write('Winner is blue with ' + str(total_points_right) + ' points!', font=('impact', 30, 'normal'))
+            winner.write('Winner is blue with ' + str(total_points_right) + ' points!',align="center", font=('Minecrafter', 30, 'normal'))
             print("test")
 
     home_button = t.Turtle()
