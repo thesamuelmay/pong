@@ -25,6 +25,16 @@ end_match = False
 home_button_exists = False
 winner_count_left = 0
 winner_count_right = 0
+block_grid = [[0 for _ in range(5)] for _ in range(24)]
+starting_x = None
+starting_y = None
+
+
+block_width = 10
+block_height = 10
+gap = 20
+number_of_rows = 24
+number_of_columns = 5
 
 window = t.Screen()
 window.addshape('local.gif')
@@ -89,6 +99,8 @@ def local_coop():
     #initilaise the Block class
     class Block:
         def __init__(self, x, y):
+            self.x = x
+            self.y = y
             self.block_turtle = t.Turtle()  
             self.block_turtle.shape("square")  
             self.block_turtle.color("green")  
@@ -100,6 +112,9 @@ def local_coop():
 
         def hide(self):
             self.block_turtle.hideturtle() 
+
+        def get_position(self):
+            return self.x, self.y
 
 
     def is_collision(block, ball):
@@ -236,32 +251,33 @@ def local_coop():
     block_break_display_right = 0
     block_break_count_left = 0
     block_list = []
+
     def blocks():
-     global block_list
+        global starting_x, starting_y
+        global block_list
+        global block_grid  # Make sure to include the block_grid
+        global block_width,block_height,gap,number_of_rows,number_of_columns
+        # Constants
 
-     # Constants
-     block_width = 10
-     block_height = 10
-     gap = 20
-     number_of_rows = 24
-     number_of_columns = 5
+        # Calculate total dimensions
+        total_width = (block_width * number_of_columns) + (gap * (number_of_columns - 1))
+        total_height = (block_height * number_of_rows) + (gap * (number_of_rows - 1))
 
-     # Calculate total dimensions
-     total_width = (block_width * number_of_columns) + (gap * (number_of_columns - 1))
-     total_height = (block_height * number_of_rows) + (gap * (number_of_rows - 1))
+        # Calculate starting points
+        starting_x = -total_width / 2
+        starting_y = total_height / 2
 
-     # Calculate starting points
-     starting_x = -total_width / 2
-     starting_y = total_height / 2
-
-     for row in range(number_of_rows):
-         for col in range(number_of_columns):
-            if random.randint(0,3) == 3:
-             x = starting_x + (block_width + gap) * col
-             y = starting_y - (block_height + gap) * row
-             block = Block(x, y)  # Instantiate a Block object
-             block.set_position(x, y)
-             block_list.append(block)
+        for row in range(number_of_rows):
+            for col in range(number_of_columns):
+                # Only try to spawn a block if there isn't one already at this grid position
+                if block_grid[row][col] == 0:
+                    if random.randint(0, 8) == 1:
+                        x = starting_x + (block_width + gap) * col
+                        y = starting_y - (block_height + gap) * row
+                        block = Block(x, y)  # Instantiate a Block object
+                        block.set_position(x, y)
+                        block_list.append(block)
+                        block_grid[row][col] = 1  # Update the block_grid to show a block exists at this position
 
 
 
@@ -367,10 +383,17 @@ def local_coop():
         
         
         
+        if random.randint(0,120)==1:
+            blocks()
+
 
         for block in block_list:
-         
+         x, y = block.get_position()
+         col = int((x - starting_x) / (block_width + gap))
+         row = int((starting_y - y) / (block_height + gap))
+
          if collision(block, ball):  # Assuming you have a function to check collision
+            block_grid[row][col] = 0
             block.hide()
             block_list.remove(block)
 
