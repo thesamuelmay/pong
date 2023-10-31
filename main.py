@@ -2,6 +2,7 @@
 
 import time
 import turtle as t
+import random
 #import pyglet
 
 
@@ -255,6 +256,7 @@ def local_coop():
 
      for row in range(number_of_rows):
          for col in range(number_of_columns):
+            if random.randint(0,3) == 3:
              x = starting_x + (block_width + gap) * col
              y = starting_y - (block_height + gap) * row
              block = Block(x, y)  # Instantiate a Block object
@@ -419,7 +421,6 @@ def local_coop():
            print(current_state)
            window.update()
            break
-        
 
     blocks()
     setup()
