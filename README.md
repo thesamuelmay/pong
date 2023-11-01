@@ -12,12 +12,14 @@ To run this project, you'll need to have Python installed along with the Turtle 
 pip install PythonTurtle
 ```
 
+###Make sure python is updated to the latest version.
+
 ## How to Run
 
 To run the game, simply navigate to the directory containing `main.py` and run the following command:
 
 ```bash
-python main.py
+python3 main.py
 ```
 
 ## Usage

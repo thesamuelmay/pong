@@ -8,7 +8,7 @@ import random
 
 
 # Initialize a game state variable
-#pyglet.font.add_file('Minecrafter.Reg.tff')
+#pyglet.font.add_file('Minecrafter.ttf')
 
 block_list = []
 current_time = time.time()
