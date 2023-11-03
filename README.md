@@ -12,7 +12,7 @@ To run this project, you'll need to have Python installed along with the Turtle 
 pip install PythonTurtle
 ```
 
-###Make sure python is updated to the latest version.
+### Make sure python is updated to the latest version.
 
 ## How to Run
 
