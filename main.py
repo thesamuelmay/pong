@@ -29,6 +29,8 @@ block_grid = [[0 for _ in range(5)] for _ in range(24)]
 starting_x = None
 starting_y = None
 
+tutorial = False
+
 
 block_width = 10
 block_height = 10
@@ -64,6 +66,8 @@ def home_screen():
     print("Your home!")
     print(home_initialised)
 
+
+
     
     #Init Local button
     if home_initialised == False:
@@ -78,6 +82,7 @@ def home_screen():
       button_local.goto(0,60)
       button_local.onclick(local_state)
     window.update()
+
 
 
 def hide_home():
@@ -248,7 +253,7 @@ def local_coop():
       
     winner_count_left = 0
     winner_count_right = 0
-    block_break_display_right = 0
+    block_break_count_right = 0
     block_break_count_left = 0
     block_list = []
 
@@ -281,7 +286,7 @@ def local_coop():
 
 
 
-
+    
     def main():
      global winner_count_right
      global winner_count_left
@@ -323,10 +328,78 @@ def local_coop():
 
 
 
+
+
      gameover = False
-     global current_time,ball_moving,launch_player
+     global current_time,ball_moving,launch_player,tutorial,spawning
      global block_list
+    
      while gameover == False:
+        if tutorial == False:
+            def block_spawn():
+                spawning = True
+            tutorial_turtle = t.Turtle()
+            tutorial_turtle.hideturtle()
+            tutorial_turtle.pencolor("white")
+            tutorial_turtle.speed(0)
+            tutorial_turtle.penup()
+            def clear_text():
+                tutorial_turtle.clear()
+            tutorial_turtle.setpos(100,0)
+            tutorial_turtle.write('Use Up And Down ', align="left",font=('', 25, 'normal'))
+            tutorial_turtle.setpos(100,-35)
+            tutorial_turtle.write('Arrow to move.', align="left",font=('', 25, 'normal'))
+            t.Screen().ontimer(clear_text, 4000)
+            def W_S_Keys():
+             tutorial_turtle.setpos(-100,0)
+             tutorial_turtle.write('Use W And S ', align="right",font=('', 25, 'normal'))
+             tutorial_turtle.setpos(-100,-35)
+             tutorial_turtle.write('KEYS to move.', align="right",font=('', 25, 'normal'))
+
+            def blocks_text():
+             tutorial_turtle.setpos(100,200)
+             tutorial_turtle.write('Blocks Will ', align="left",font=('', 23, 'normal'))
+             tutorial_turtle.setpos(100,155)
+             tutorial_turtle.write('Periodically Regenerate.', align="left",font=('', 23, 'normal'))
+            def break_text():
+             tutorial_turtle.setpos(100,200)
+             tutorial_turtle.write('Break Blocks To', align="left",font=('', 23, 'normal'))
+             tutorial_turtle.setpos(100,155)
+             tutorial_turtle.write('Get 1 Point.', align="left",font=('', 23, 'normal'))
+            def score_text():
+             tutorial_turtle.setpos(100,250)
+             tutorial_turtle.write('Scoring a goal', align="left",font=('', 23, 'normal'))
+             tutorial_turtle.setpos(100,215)
+             tutorial_turtle.write('Get 5 Points.', align="left",font=('', 23, 'normal'))
+
+            def end_text():
+             tutorial_turtle.setpos(100,250)
+             tutorial_turtle.write('Game Ends Once 1', align="left",font=('', 23, 'normal'))
+             tutorial_turtle.setpos(100,215)
+             tutorial_turtle.write('Player Gets 5 Goals', align="left",font=('', 23, 'normal'))
+
+            def ball_launch():
+             tutorial_turtle.setpos(100,0)
+             tutorial_turtle.write('Press Space ', align="left",font=('', 23, 'normal'))
+             tutorial_turtle.setpos(100,-35)
+             tutorial_turtle.write('To Launch The Ball', align="left",font=('', 23, 'normal'))
+
+            t.Screen().ontimer(W_S_Keys, 4000)
+            t.Screen().ontimer(clear_text, 8000)
+            t.Screen().ontimer(blocks_text, 8000)
+            t.Screen().ontimer(clear_text, 12000)
+            t.Screen().ontimer(break_text, 12000)
+            t.Screen().ontimer(clear_text, 16000)
+            t.Screen().ontimer(score_text, 16000)
+            t.Screen().ontimer(clear_text, 20000)
+            t.Screen().ontimer(end_text, 20000)
+            t.Screen().ontimer(clear_text, 24000)
+            t.Screen().ontimer(ball_launch, 24000)
+            t.Screen().ontimer(clear_text, 28000)
+            t.Screen().ontimer(end_text, 20000)
+            tutorial = True
+
+
         dist = ball.distance(left_paddle)
         if dist < 20:
          print("distance"+ str(dist))
@@ -382,8 +455,8 @@ def local_coop():
         window.update()
         
         
-        
-        if random.randint(0,120)==1:
+        #Block spawning
+        if tutorial == True and random.randint(0,200)==1:
             blocks()
 
 
@@ -462,9 +535,10 @@ def online_coop():
 # Function for GameOver state (Optional)
 def game_over():
     # Logic for displaying game over screen
-    global window,ball,left_paddle,right_paddle,count_display_right,count_display_left,block_break_display_right,block_break_display_left,game_over_initialised,winner_count_left,winner_count_right,block_break_count_right,block_break_count_left,home_button_exists,home_button
+    global window,ball,left_paddle,right_paddle,count_display_right,count_display_left,block_break_display_right,block_break_display_left,game_over_initialised,winner_count_left,winner_count_right,block_break_count_right,block_break_count_left,home_button_exists,home_button,end_match
 
     global winner
+    end_match = False 
     window.bgpic("bg.gif")
     winner = t.Turtle()
     winner.speed(0)
