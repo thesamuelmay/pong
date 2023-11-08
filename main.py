@@ -28,7 +28,7 @@ exited = True
 total_points_right = 0
 total_points_left = 0
 
-debug_mode = True
+debug_mode = False
 
 
 
