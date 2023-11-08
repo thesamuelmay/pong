@@ -23,11 +23,12 @@ winner_count_right = 0
 block_grid = [[0 for _ in range(5)] for _ in range(24)]
 starting_x = None
 starting_y = None
+exited = True 
 
 total_points_right = 0
 total_points_left = 0
 
-debug_mode = False
+debug_mode = True
 
 
 
@@ -35,14 +36,14 @@ debug_mode = False
 block_width = 10
 block_height = 10
 gap = 20
-number_of_rows = 24
+number_of_rows = 23
 number_of_columns = 5
 
 window = t.Screen()
 window.addshape('local.gif')
 window.addshape('home.gif')
 window.bgpic("tutorial.gif")
-window.setup(width=1000, height=700)
+window.setup(width=1150, height=850)
 window.tracer(0)
 
 def set_game_state(state):
@@ -73,6 +74,7 @@ def home_state(x,y):
 def home_screen():
     global button_local,home_initialised,window,debug_mode
     global home_button
+    window.bgcolor('black')
     window.bgpic("tutorial.gif")
     if debug_mode == True:
      print(home_initialised)
@@ -195,6 +197,11 @@ def local_coop():
 
     time_delta = 0
 
+    def exit():
+        global set_game_state,exited
+        exited = False
+        window.update()
+        return
 
     def launch_ball():
             global ball_moving,launch_player
@@ -249,6 +256,7 @@ def local_coop():
         if y-70 > -350:
             right_paddle.sety(y)
 
+
     window.listen()
     window.onkeypress(lambda: on_key_press('w'), 'w')
     window.onkeypress(lambda: on_key_press('s'), 's')
@@ -259,6 +267,7 @@ def local_coop():
     window.onkeyrelease(lambda: on_key_release('Up'), 'Up')
     window.onkeyrelease(lambda: on_key_release('Down'), 'Down')
     window.onkeypress(launch_ball, 'space')
+    window.onkeypress(exit, 'q')
 
 
 
@@ -300,12 +309,29 @@ def local_coop():
 
 
 
-    
+    def hide_game():
+        global count_display_left,count_display_right,game_over_initialised,block_list,quit_game
+        count_display_left.clear()
+        count_display_right.clear()
+        
+        if game_over_initialised == False:
+         t.clear()
+         print("test")
+         ball.hideturtle()
+         left_paddle.goto(300,500)
+         print(ball.xcor())
+         right_paddle.hideturtle()
+         quit_game.clear()
+         count_display_right.hideturtle()
+         count_display_left.hideturtle()
+         for block in block_list:
+          block.hide()
+
     def main():
      global winner_count_right
      global winner_count_left
      global last_hit_player, block_break_count_left, block_break_count_right,end_match
-     global ball,left_paddle,right_paddle,count_display_right,count_display_left,block_break_display_right,block_break_display_left
+     global ball,left_paddle,right_paddle,count_display_right,count_display_left,block_break_display_right,block_break_display_left,quit_game
 
      count_display_left = t.Turtle()
      count_display_right = t.Turtle()
@@ -322,6 +348,14 @@ def local_coop():
      count_display_left.write('0',align="left",font=('',30,'normal'))
      count_display_right.write('0',align="right",font=('',30,'normal'))
 
+     quit_game = t.Turtle()
+     quit_game.hideturtle()
+     quit_game.speed(0)
+     quit_game.penup()
+     quit_game.setpos(0,-400)
+     quit_game.pencolor("white")
+     quit_game.write('Press Q to quit home',align="center",font=('',30,'normal'))
+
 
 
 
@@ -331,10 +365,11 @@ def local_coop():
 
      gameover = False
      global current_time,ball_moving,launch_player,tutorial,spawning
-     global block_list
+     global block_list,exited
     
      while gameover == False:
-           
+
+          
 
 
         dist = ball.distance(left_paddle)
@@ -453,6 +488,16 @@ def local_coop():
             last_hit_player = 'left'
 
 
+        if exited == False:
+            exited = True
+            
+            if debug_mode == True:
+                print(current_state)
+                print('exited')
+            hide_game()
+            set_game_state("home")
+            window.update()
+            break
         if end_match == False :
           total_points_left = winner_count_left
           total_points_right = winner_count_right
@@ -472,6 +517,9 @@ def local_coop():
 def online_coop():
    
     pass
+
+
+
 
 
 def game_over():
