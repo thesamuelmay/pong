@@ -51,7 +51,9 @@ def set_game_state(state):
     current_state = state
 
 def local_state(x,y): 
-    global current_state
+    global current_state,help_button
+    help_button.hideturtle()
+
     current_state = 'local'
 
 def help_state(x,y): 
@@ -74,32 +76,31 @@ def home_screen():
     global button_local,home_initialised,window,help_button
     global home_button
     print("Your home!")
+    window.bgpic("bg.gif")
     print(home_initialised)
-
-
-
-    
     #Init Local button
     if home_initialised == False:
       home_initialised = True
-      window.bgpic("bg.gif")
       help_button = t.Turtle()
-      help_button.showturtle()
-      help_button.shape('help.gif')
-      help_button.penup()
-      help_button.goto(300,310)
-      help_button.onclick(help_state)
-
 
       print(home_initialised)
       button_local = t.Turtle()
-      button_local.showturtle()
-      button_local.shape('local.gif')
-      button_local.shapesize(stretch_wid=0.001, stretch_len=1000)
-      
-      button_local.penup()
-      button_local.goto(0,60)
-      button_local.onclick(local_state)
+
+
+    
+    help_button.showturtle()
+    help_button.shape('help.gif')
+    help_button.penup()
+    help_button.goto(300,310)
+    help_button.onclick(help_state)
+    
+    button_local.showturtle()
+    button_local.shape('local.gif')
+    button_local.shapesize(stretch_wid=0.001, stretch_len=1000)
+    
+    button_local.penup()
+    button_local.goto(0,60)
+    button_local.onclick(local_state)
     window.update()
 
 
@@ -111,7 +112,7 @@ def hide_home():
 def hide_help():
   global help_button,window
   help_button.hideturtle()
-  window.update()
+  print("hidden help")
   
 def tutorial():
     global window,help_button,current_state,on_help_screen
@@ -127,11 +128,13 @@ def local_coop():
     global current_game_state,block_list,current_time,winner_count_left,winner_count_right,window,last_hit_player, block_break_count_left, block_break_count_right,end_match
     # Your existing game code goes here, integrated as part of local_coop
     global winner_count_left,winner_count_right,block_break_count_right,block_break_display_left,help_button
-    global ball,left_paddle,right_paddle,count_display_right,count_display_left,block_break_display_right,block_break_display_left
+    global ball,left_paddle,right_paddle,count_display_right,count_display_left,block_break_display_right,block_break_display_left,help_button
     hide_home()
     window.bgcolor("black")
     window.bgpic("nopic")
+    hide_help()
     help_button.hideturtle()
+    button_local.hideturtle()
 
     #initilaise the Block class
     class Block:
@@ -589,7 +592,6 @@ while True:
         home_screen()
     elif current_state == "local":
         home_initialised = False  # Reset flag since we're no longer in home screen
-        hide_help()
         print('hidden help')
         local_coop()
     elif current_state == "online":
@@ -599,7 +601,6 @@ while True:
         home_initialised = False
         game_over()
     elif current_state == 'help':
-        home_initialised = False
         tutorial()
         
     time.sleep(0.1)  # Add a slight delay to avoid overwhelming the CPU
