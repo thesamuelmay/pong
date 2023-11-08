@@ -391,12 +391,12 @@ def local_coop():
         move_paddles()
         window.update()
         
-        #x= (ball.xcor())
-        #Block spawning
-        #if x < -200:
-        #    last_hit_player == 'left'
-        #elif x > 200:
-        #    last_hit_player == 'right'
+        x= (ball.xcor())
+        
+        if x < -200:
+           last_hit_player == 'left'
+        elif x > 200:
+            last_hit_player == 'right'
         if random.randint(0,200)==1:
             blocks()
 
@@ -406,7 +406,7 @@ def local_coop():
          col = int((x - starting_x) / (block_width + gap))
          row = int((starting_y - y) / (block_height + gap))
 
-         if collision(block, ball):  # Assuming you have a function to check collision
+         if collision(block, ball): 
             block_grid[row][col] = 0
             block.hide()
             block_list.remove(block)
@@ -426,7 +426,7 @@ def local_coop():
 
 
 
-        # Determine the side where the collision happened (this is a simplified example)
+        # Determine the side where the collision happened 
             dx = abs(block.block_turtle.xcor() - ball.xcor())
             dy = abs(block.block_turtle.ycor() - ball.ycor())
 
@@ -469,19 +469,13 @@ def local_coop():
     setup()
     main()
 
-    # ... (rest of your existing code)
-
-    # At the end of the game, you can change the current_game_state to 'GameOver' or 'HomeScreen', like this:
-    # current_game_state = "GameOver"
- # Function for OnlineCoOp state
-
 def online_coop():
-    # Logic for running the online co-op game
+   
     pass
 
-# Function for GameOver state (Optional)
+
 def game_over():
-    # Logic for displaying game over screen
+    
     global window,ball,left_paddle,right_paddle,count_display_right,count_display_left,block_break_display_right,block_break_display_left,game_over_initialised,winner_count_left,winner_count_right,block_break_count_right,block_break_count_left,home_button_exists,home_button,end_match
 
     global winner
