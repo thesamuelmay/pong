@@ -456,7 +456,7 @@ def local_coop():
         if end_match == False :
           total_points_left = winner_count_left
           total_points_right = winner_count_right
-          if winner_count_left >= 10 or winner_count_right >= 10:
+          if winner_count_left >= 50 or winner_count_right >= 50:
            print("game over!!")
            end_match = True
            
