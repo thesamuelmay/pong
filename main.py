@@ -3,12 +3,7 @@
 import time
 import turtle as t
 import random
-#import pyglet
 
-
-
-# Initialize a game state variable
-#pyglet.font.add_file('Minecrafter.ttf')
 
 block_list = []
 current_time = time.time()
@@ -28,7 +23,12 @@ winner_count_right = 0
 block_grid = [[0 for _ in range(5)] for _ in range(24)]
 starting_x = None
 starting_y = None
-on_help_screen = False 
+
+total_points_right = 0
+total_points_left = 0
+
+debug_mode = False
+
 
 
 
@@ -41,8 +41,7 @@ number_of_columns = 5
 window = t.Screen()
 window.addshape('local.gif')
 window.addshape('home.gif')
-window.addshape('help.gif')
-window.bgpic("bg.gif")
+window.bgpic("tutorial.gif")
 window.setup(width=1000, height=700)
 window.tracer(0)
 
@@ -51,8 +50,7 @@ def set_game_state(state):
     current_state = state
 
 def local_state(x,y): 
-    global current_state,help_button
-    help_button.hideturtle()
+    global current_state
 
     current_state = 'local'
 
@@ -73,33 +71,24 @@ def home_state(x,y):
 
 # Function to handle home screen logic
 def home_screen():
-    global button_local,home_initialised,window,help_button
+    global button_local,home_initialised,window,debug_mode
     global home_button
-    print("Your home!")
-    window.bgpic("bg.gif")
-    print(home_initialised)
+    window.bgpic("tutorial.gif")
+    if debug_mode == True:
+     print(home_initialised)
     #Init Local button
     if home_initialised == False:
       home_initialised = True
-      help_button = t.Turtle()
 
       print(home_initialised)
       button_local = t.Turtle()
 
-
-    
-    help_button.showturtle()
-    help_button.shape('help.gif')
-    help_button.penup()
-    help_button.goto(300,310)
-    help_button.onclick(help_state)
-    
     button_local.showturtle()
     button_local.shape('local.gif')
     button_local.shapesize(stretch_wid=0.001, stretch_len=1000)
     
     button_local.penup()
-    button_local.goto(0,60)
+    button_local.goto(0,-100)
     button_local.onclick(local_state)
     window.update()
 
@@ -109,16 +98,7 @@ def hide_home():
   global button_local,window
   button_local.hideturtle()
 
-def hide_help():
-  global help_button,window
-  help_button.hideturtle()
-  print("hidden help")
   
-def tutorial():
-    global window,help_button,current_state,on_help_screen
-    window.bgpic("tutorial.gif")
-    hide_home()
-    window.update()
 
     
     
@@ -129,11 +109,10 @@ def local_coop():
     # Your existing game code goes here, integrated as part of local_coop
     global winner_count_left,winner_count_right,block_break_count_right,block_break_display_left,help_button
     global ball,left_paddle,right_paddle,count_display_right,count_display_left,block_break_display_right,block_break_display_left,help_button
+    global total_points_left,total_points_right
     hide_home()
     window.bgcolor("black")
     window.bgpic("nopic")
-    hide_help()
-    help_button.hideturtle()
     button_local.hideturtle()
 
     #initilaise the Block class
@@ -158,7 +137,7 @@ def local_coop():
 
 
     def is_collision(block, ball):
-        return abs(block.block_turtle.xcor() - ball.xcor()) < 10 and abs(block.block_turtle.ycor() - ball.ycor()) < 10
+        return abs(block.block_turtle.xcor() - ball.xcor()) < 5 and abs(block.block_turtle.ycor() - ball.ycor()) < 5
 
     def collision(block,ball):
         return abs(ball.distance(block.block_turtle)) <30
@@ -207,8 +186,8 @@ def local_coop():
     ball.color("white")
     ball.penup()
     ball.goto(right_paddle.xcor() - 20, right_paddle.ycor())
-    ball.dx = 8.5
-    ball.dy = -8.5
+    ball.dx = 7.5
+    ball.dy = -7.5
 
 
 
@@ -340,23 +319,8 @@ def local_coop():
      count_display_right.setpos(450,300)
      count_display_left.pencolor("white")
      count_display_right.pencolor("white")
-     count_display_left.write('0',align="left",font=('Minecrafter',30,'normal'))
-     count_display_right.write('0',align="right",font=('Minecrafter',30,'normal'))
-
-     block_break_display_left = t.Turtle()
-     block_break_display_right = t.Turtle()
-     block_break_display_left.hideturtle()
-     block_break_display_right.hideturtle()
-     block_break_display_left.pencolor("white")
-     block_break_display_right.pencolor("white")
-     block_break_display_left.speed(0)
-     block_break_display_right.speed(0)
-     block_break_display_left.penup()
-     block_break_display_right.penup()
-     block_break_display_left.setpos(-450, 270)
-     block_break_display_right.setpos(450, 270)
-     block_break_display_left.write('Blocks: 0', align="left",font=('Minecrafter', 20, 'normal'))
-     block_break_display_right.write('Blocks: 0', align="right",font=('Minecrafter', 20, 'normal'))
+     count_display_left.write('0',align="left",font=('',30,'normal'))
+     count_display_right.write('0',align="right",font=('',30,'normal'))
 
 
 
@@ -384,15 +348,15 @@ def local_coop():
           x= (ball.xcor())
           print(x)
           if x < 0:
-              winner_count_right+=1
+              total_points_right+=1
           else:
-              winner_count_left+=1
+              total_points_left+=1
           print(winner_count_left)
           print(winner_count_right)
           count_display_right.clear()
           count_display_left.clear()
-          count_display_left.write(winner_count_left,align="left",font=('Minecrafter',30,'normal'))
-          count_display_right.write(winner_count_right,align="right",font=('Minecrafter',30,'normal'))
+          count_display_left.write(winner_count_left,align="left",font=('',30,'normal'))
+          count_display_right.write(winner_count_right,align="right",font=('',30,'normal'))
 
           test = ball.goto(right_paddle.xcor()-40,right_paddle.ycor())
           print(test)
@@ -429,6 +393,10 @@ def local_coop():
         
         
         #Block spawning
+        if ball.xcor() < -200:
+            last_hit_player == 'left'
+        elif ball.xcor > 200:
+            last_hit_player == 'right'
         if random.randint(0,200)==1:
             blocks()
 
@@ -444,13 +412,11 @@ def local_coop():
             block_list.remove(block)
 
             if last_hit_player == 'left':
-                    block_break_count_left += 1
-                    block_break_display_left.clear()
-                    block_break_display_left.write('Blocks: ' + str(block_break_count_left),align="left", font=('Minecrafter', 20, 'normal'))
+                    total_points_right += 1
+        
             elif last_hit_player == 'right':
-                    block_break_count_right += 1
-                    block_break_display_right.clear()
-                    block_break_display_right.write('Blocks: ' + str(block_break_count_right),align="right",font=('Minecrafter', 20, 'normal'))
+                    total_points_right += 1
+                   
 
 
 
@@ -482,7 +448,9 @@ def local_coop():
 
 
         if end_match == False :
-          if winner_count_left >= 5 or winner_count_right >= 5:
+          total_points_left = (winner_count_left*5) + block_break_count_left
+          total_points_right = (winner_count_right*5) + block_break_count_right
+          if total_points_left >= 10 or total_points_right >= 10:
            print("game over!!")
            end_match = True
            
@@ -511,6 +479,8 @@ def game_over():
     global window,ball,left_paddle,right_paddle,count_display_right,count_display_left,block_break_display_right,block_break_display_left,game_over_initialised,winner_count_left,winner_count_right,block_break_count_right,block_break_count_left,home_button_exists,home_button,end_match
 
     global winner
+    global total_points_right
+    global total_points_left
     end_match = False 
     window.bgpic("bg.gif")
     winner = t.Turtle()
@@ -535,9 +505,6 @@ def game_over():
      block_break_display_right.hideturtle()
      block_break_display_left.hideturtle()
 
-     total_points_left = (winner_count_left*5) + block_break_count_left
-     total_points_right = (winner_count_right*5) + block_break_count_right
-
 
 
      for block in block_list:
@@ -545,13 +512,15 @@ def game_over():
     
      print(total_points_right)
      print(total_points_left)
+     total_points_left = (winner_count_left*5) + block_break_count_left
+     total_points_right = (winner_count_right*5) + block_break_count_right
      if total_points_left > total_points_right:
             winner.clear()
-            winner.write('Winner is red with ' + str(total_points_left) + ' points!',align="center", font=('Minecrafter', 30, 'normal'))
+            winner.write('Winner is red!',align="center", font=('', 30, 'normal'))
             print("test")
      else:
             winner.clear()
-            winner.write('Winner is blue with ' + str(total_points_right) + ' points!',align="center", font=('Minecrafter', 30, 'normal'))
+            winner.write('Winner is blue!',align="center", font=('', 30, 'normal'))
             print("test")
 
     home_button = t.Turtle()
@@ -584,7 +553,8 @@ set_game_state("home")
 
 # Main game loop
 while True:
-    print("in loop")
+    if debug_mode == True:
+     print("in loop")
     if current_state == "home":
         if home_button_exists == True:
             home_button.hideturtle()
@@ -592,7 +562,6 @@ while True:
         home_screen()
     elif current_state == "local":
         home_initialised = False  # Reset flag since we're no longer in home screen
-        print('hidden help')
         local_coop()
     elif current_state == "online":
         home_initialised = False  # Reset flag since we're no longer in home screen
@@ -600,8 +569,6 @@ while True:
     elif current_state == 'over':
         home_initialised = False
         game_over()
-    elif current_state == 'help':
-        tutorial()
         
     time.sleep(0.1)  # Add a slight delay to avoid overwhelming the CPU
 
