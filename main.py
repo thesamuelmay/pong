@@ -348,11 +348,11 @@ def local_coop():
           x= (ball.xcor())
           print(x)
           if x < 0:
-              total_points_right+=1
+              winner_count_right+=5
           else:
-              total_points_left+=1
-          print(winner_count_left)
-          print(winner_count_right)
+              winner_count_left+=5
+          print(total_points_left)
+          print(total_points_right)
           count_display_right.clear()
           count_display_left.clear()
           count_display_left.write(winner_count_left,align="left",font=('',30,'normal'))
@@ -391,12 +391,12 @@ def local_coop():
         move_paddles()
         window.update()
         
-        
+        #x= (ball.xcor())
         #Block spawning
-        if ball.xcor() < -200:
-            last_hit_player == 'left'
-        elif ball.xcor > 200:
-            last_hit_player == 'right'
+        #if x < -200:
+        #    last_hit_player == 'left'
+        #elif x > 200:
+        #    last_hit_player == 'right'
         if random.randint(0,200)==1:
             blocks()
 
@@ -412,10 +412,16 @@ def local_coop():
             block_list.remove(block)
 
             if last_hit_player == 'left':
-                    total_points_right += 1
+                    winner_count_left += 1
+                    count_display_left.clear()
+                    count_display_left.write(winner_count_left,align="left",font=('',30,'normal'))
+                    window.update()
         
             elif last_hit_player == 'right':
-                    total_points_right += 1
+                    winner_count_right += 1
+                    count_display_right.clear()
+                    count_display_right.write(winner_count_right,align="right",font=('',30,'normal'))
+                    window.update()
                    
 
 
@@ -448,9 +454,9 @@ def local_coop():
 
 
         if end_match == False :
-          total_points_left = (winner_count_left*5) + block_break_count_left
-          total_points_right = (winner_count_right*5) + block_break_count_right
-          if total_points_left >= 10 or total_points_right >= 10:
+          total_points_left = winner_count_left
+          total_points_right = winner_count_right
+          if winner_count_left >= 10 or winner_count_right >= 10:
            print("game over!!")
            end_match = True
            
@@ -488,13 +494,11 @@ def game_over():
     winner.goto(0,150)
     winner.hideturtle()
     winner.pencolor("white")
+    count_display_left.clear()
+    count_display_right.clear()
     
     if game_over_initialised == False:
      t.clear()
-     count_display_left.clear()
-     count_display_right.clear()
-     block_break_display_left.clear()
-     block_break_display_right.clear()
      print("test")
      ball.hideturtle()
      left_paddle.goto(300,500)
@@ -502,8 +506,6 @@ def game_over():
      right_paddle.hideturtle()
      count_display_right.hideturtle()
      count_display_left.hideturtle()
-     block_break_display_right.hideturtle()
-     block_break_display_left.hideturtle()
 
 
 
@@ -512,9 +514,7 @@ def game_over():
     
      print(total_points_right)
      print(total_points_left)
-     total_points_left = (winner_count_left*5) + block_break_count_left
-     total_points_right = (winner_count_right*5) + block_break_count_right
-     if total_points_left > total_points_right:
+     if winner_count_left > winner_count_right:
             winner.clear()
             winner.write('Winner is red!',align="center", font=('', 30, 'normal'))
             print("test")
