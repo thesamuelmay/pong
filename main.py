@@ -88,7 +88,7 @@ def home_screen():
     button_local.shapesize(stretch_wid=0.001, stretch_len=1000)
     
     button_local.penup()
-    button_local.goto(0,-100)
+    button_local.goto(0,-250)
     button_local.onclick(local_state)
     window.update()
 
