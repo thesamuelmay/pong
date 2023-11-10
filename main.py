@@ -327,6 +327,11 @@ def local_coop():
          quit_game.clear()
          for block in block_list:
           block.hide()
+          x, y = block.get_position()
+          col = int((x - starting_x) / (block_width + gap))
+          row = int((starting_y - y) / (block_height + gap))
+          block_grid[row][col] = 0
+          
 
     def main():
      global winner_count_right
@@ -555,6 +560,10 @@ def game_over():
 
      for block in block_list:
       block.hide()
+      x, y = block.get_position()
+      col = int((x - starting_x) / (block_width + gap))
+      row = int((starting_y - y) / (block_height + gap))
+      block_grid[row][col] = 0
     
      print(total_points_right)
      print(total_points_left)
