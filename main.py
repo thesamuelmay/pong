@@ -299,7 +299,7 @@ def local_coop():
             for col in range(number_of_columns):
                 # Only try to spawn a block if there isn't one already at this grid position
                 if block_grid[row][col] == 0:
-                    if random.randint(0, 8) == 1:
+                    if random.randint(0, 10) == 1:
                         x = starting_x + (block_width + gap) * col
                         y = starting_y - (block_height + gap) * row
                         block = Block(x, y)  # Instantiate a Block object
@@ -438,7 +438,11 @@ def local_coop():
            last_hit_player == 'left'
         elif x > 200:
             last_hit_player == 'right'
-        if random.randint(0,200)==1:
+
+
+
+
+        if random.randint(0,400)==1:
             blocks()
 
 
