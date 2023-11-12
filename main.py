@@ -360,7 +360,7 @@ def local_coop():
      quit_game.penup()
      quit_game.setpos(0,-400)
      quit_game.pencolor("white")
-     quit_game.write('Press space to launch the ball      Press Q to quit home',align="center",font=('',30,'normal'))
+     quit_game.write('Press space to launch the ball                               Press Q to quit home',align="center",font=('',30,'normal'))
 
 
 
