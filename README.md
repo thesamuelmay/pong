@@ -44,7 +44,7 @@ After running the `main.py` script, a window will appear displaying the game int
 The game is controlled using keyboard inputs to move the paddle
 
 ## Known issues
--Ball clips uut of game boundry https://github.com/thesamuelmay/pong/issues/8#issue-1989648917
+-Ball clips out of game boundry https://github.com/thesamuelmay/pong/issues/8#issue-1989648917
 
 ## Contributing
 
